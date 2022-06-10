@@ -5,7 +5,7 @@ import Editor from "./components/Editor";
 import Follower from "./components/Follower";
 import {FloatingLabel, Form} from "react-bootstrap";
 
-export function App({_useDispatch = useDispatch, _useSelector = useSelector}) {
+export function App({_useDispatch = useDispatch, _useSelector = useSelector, EditorC=Editor, FollowerC = Follower}) {
 
     const dispatch = _useDispatch()
     const pmsRole = _useSelector(state => state.pmsRole)
@@ -31,7 +31,7 @@ export function App({_useDispatch = useDispatch, _useSelector = useSelector}) {
                             <option value="follower">Follower</option>
                         </Form.Select>
                     </FloatingLabel>
-                </div>) : ( pmsRole === "editor" ? <Editor /> : <Follower /> )
+                </div>) : ( pmsRole === "editor" ? <EditorC /> : <FollowerC /> )
             }
             </main>
         </div>
