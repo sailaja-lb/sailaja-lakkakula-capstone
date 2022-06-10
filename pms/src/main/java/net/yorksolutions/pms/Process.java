@@ -2,6 +2,7 @@ package net.yorksolutions.pms;
 
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,19 +19,18 @@ public class Process {
    public String status;
 
     @OneToMany(cascade = CascadeType.ALL)
-    //replaced cascadetype.all with cascadetype.merge
     @JoinColumn(name = "process_id")
-    public Set<Stage> stages;
+    public List<Stage> stages;
 
     public Process() {
 
     }
 
-    public Set<Stage> getStages() {
+    public List<Stage> getStages() {
         return stages;
     }
 
-    public void setStages(Set<Stage> stages) {
+    public void setStages(List<Stage> stages) {
         this.stages = stages;
     }
 
@@ -58,7 +58,7 @@ public class Process {
         return id;
     }
 
-    public Process(String title, String status, Set stages) {
+    public Process(String title, String status, List stages) {
         this.title = title;
         this.status = status;
         this.stages = stages;

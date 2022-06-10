@@ -43,14 +43,14 @@ public class EditorControllerTest {
 //        assertEquals(HttpStatus.OK, response.getStatusCode());
 //    }
 
-    @Test
-    void itShouldDeleteAProcessWithGivenIdWhenCalled() {
-        TestRestTemplate rest = new TestRestTemplate();
-        final Long id = 1L;
-        String url = "http://localhost:" + port + "/deleteProcess/{id}";
-        doThrow(new ResponseStatusException(HttpStatus.ACCEPTED)).when(service).deleteProcess(id);
-        final ResponseEntity<Void> response = rest.getForEntity(url, Void.class);
-        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-    }
+//    @Test
+//    void itShouldDeleteAProcessWithGivenIdWhenCalled() {
+//        TestRestTemplate rest = new TestRestTemplate();
+//        final Long id = 1L;
+//        String url = "http://localhost:" + port + "/deleteProcess/{id}";
+//        doThrow(new ResponseStatusException(HttpStatus.ACCEPTED)).when(service).deleteProcess(id);
+//        final ResponseEntity<Void> response = rest.getForEntity(url, Void.class);
+//        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+//    }
 
 }

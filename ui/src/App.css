@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
 }
 
 .App-logo {
@@ -34,4 +33,17 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.carousel-item {
+  background-color: #a9a9a9;
+}
+
+.addProcessWizard {
+  height: fit-content;
+  margin-left: 16%;
+  margin-right: 16%;
+}
+.carousel-caption {
+  position: relative !important;
 }

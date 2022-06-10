@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/editor")
@@ -19,7 +20,7 @@ public class EditorController {
 
     @GetMapping("/allProcess")
     @CrossOrigin
-    public List<Process> getAllProcess() {
+    public List<ProcessResponse> getAllProcess() {
         return service.getAllProcess();
     }
 
@@ -35,10 +36,10 @@ public class EditorController {
         return service.updateProcess(processId, process);
     }
 
-    @DeleteMapping("/deleteProcess/{id}")
+    @DeleteMapping("/deleteProcess/{token}")
     @CrossOrigin
-    public void deleteProcess(@PathVariable(value = "id") Long processId) {
-        service.deleteProcess(processId);
+    public void deleteProcess(@PathVariable(value = "token") UUID token) {
+        service.deleteProcess(token);
     }
 
     public void setService(EditorService service) {

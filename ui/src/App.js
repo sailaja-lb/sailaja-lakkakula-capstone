@@ -5,9 +5,9 @@ import Editor from "./components/Editor";
 import Follower from "./components/Follower";
 import {FloatingLabel, Form} from "react-bootstrap";
 
-function App({_useDispatch = useDispatch, _useSelector = useSelector}) {
+export function App({_useDispatch = useDispatch, _useSelector = useSelector}) {
 
-    const dispatch = _useDispatch();
+    const dispatch = _useDispatch()
     const pmsRole = _useSelector(state => state.pmsRole)
 
     const handleRoleChange = (event) => {

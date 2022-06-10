@@ -18,15 +18,15 @@ public class FollowerController {
     }
     @GetMapping("/allProcess")
     @CrossOrigin
-    public List<Process> getAllProcess() {
+    public List<ProcessResponse> getAllProcess() {
         return editorService.getAllProcess();
     }
-    @PostMapping("/startProcess")
-    @CrossOrigin
-    public void startProcess() {}
-
-    @PostMapping("/startProcess")
-    @CrossOrigin
-    public void startProcess() {}
+//    @PostMapping("/startProcess")
+//    @CrossOrigin
+//    public void startProcess() {}
+//
+//    @PostMapping("/startProcess")
+//    @CrossOrigin
+//    public void startProcess() {}
 
 }
