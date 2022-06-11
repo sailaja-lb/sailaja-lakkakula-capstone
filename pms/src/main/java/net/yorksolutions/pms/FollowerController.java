@@ -16,10 +16,17 @@ public class FollowerController {
         this.service = service;
         this.editorService = editorService;
     }
+
     @GetMapping("/allProcess")
     @CrossOrigin
-    public List<ProcessResponse> getAllProcess() {
+    public List<Process> getAllProcess() {
         return editorService.getAllProcess();
+    }
+
+    @PutMapping("/startProcess/{id}")
+    @CrossOrigin
+    public void startProcess(@PathVariable(value = "id") Long processId, @RequestBody Process process) {
+        return editorService.updateProcessStatus(processId, );
     }
 //    @PostMapping("/startProcess")
 //    @CrossOrigin

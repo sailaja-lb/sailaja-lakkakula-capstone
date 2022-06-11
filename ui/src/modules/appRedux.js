@@ -13,9 +13,10 @@ export const EDIT_PROCESS_DONE = 'EDIT_PROCESS_DONE'
 
 const initialState = {
     pmsRole: "",
-    //isEditor: false,
     allProcess: [],
-    addNewProcess: false
+    addNewProcess: false,
+    loading: false,
+    newProcessMessageSuccessful: false,
 }
 export default function reducer(state = initialState, action) {
     switch (action?.type) {
@@ -53,16 +54,6 @@ export default function reducer(state = initialState, action) {
                 newProcessMessageSuccessful: true,
                 addNewProcess: false
             }
-        // case EDITOR_SUCCESS:
-        //     return {
-        //         ...state,
-        //         isEditor: true
-        //     }
-        // case EDITOR_FAILURE:
-        //     return {
-        //         ...state,
-        //         isEditor: false
-        //     }
         default:
             return {...state}
     }
@@ -120,6 +111,19 @@ export function editProcess(token, process, _fetch=fetch) {
 export function deleteProcess(token, _fetch=fetch) {
     return async function deleteProcess(dispatch) {
         const url = `http://localhost:8080/editor/deleteProcess/${token}`
+        const response = await _fetch(url, {
+            method: 'DELETE'
+        })
+
+        if (response.ok) {
+            dispatch({type: DELETE_PROCESS_DONE})
+        }
+    }
+}
+
+export function startProcess(token, _fetch=fetch) {
+    return async function deleteProcess(dispatch) {
+        const url = `http://localhost:8080/follower/deleteProcess/${token}`
         const response = await _fetch(url, {
             method: 'DELETE'
         })

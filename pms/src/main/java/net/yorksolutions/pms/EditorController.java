@@ -20,7 +20,7 @@ public class EditorController {
 
     @GetMapping("/allProcess")
     @CrossOrigin
-    public List<ProcessResponse> getAllProcess() {
+    public List<Process> getAllProcess() {
         return service.getAllProcess();
     }
 
@@ -36,10 +36,10 @@ public class EditorController {
         return service.updateProcess(processId, process);
     }
 
-    @DeleteMapping("/deleteProcess/{token}")
+    @DeleteMapping("/deleteProcess/{id}")
     @CrossOrigin
-    public void deleteProcess(@PathVariable(value = "token") UUID token) {
-        service.deleteProcess(token);
+    public void deleteProcess(@PathVariable(value = "id") Long processId) {
+        service.deleteProcess(processId);
     }
 
     public void setService(EditorService service) {
