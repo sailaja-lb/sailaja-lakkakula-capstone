@@ -1,53 +1,41 @@
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Carousel, Form} from "react-bootstrap";
-import {useState} from "react";
 import AddStage from "./AddStage";
-import {saveNewProcess} from "../modules/appRedux";
+import {
+    ADD_NEW_PROCESS_CANCEL,
+    ADD_NEW_PROCESS_CAROUSEL_INDEX,
+    ADD_NEW_PROCESS_SET_FIELDS,
+    addNewProcessSetFields, editProcess,
+    saveNewProcess
+} from "../modules/appRedux";
 
-export default function AddProcess({_useSelector = useSelector,
-                                       _useDispatch = useDispatch}) {
-    const [carouselIndex, setCarouselIndex] = useState(0)
-    const [processMapper, setProcessMapper] = useState({
-        title: "",
-        stages: [
-            {
-                "prompt": "",
-                "res_type": null,
-                "choices": "",
-                "stage_order": null
-            },
-            {
-                "prompt": "",
-                "res_type": null,
-                "choices": "",
-                "stage_order": null
-            },
-            {
-                "prompt": "",
-                "res_type": null,
-                "choices": "",
-                "stage_order": null
-            }
-        ]
-    })
+export default function AddProcess({_useSelector = useSelector, _useDispatch = useDispatch, AddStageC = AddStage}) {
+
     const dispatch = _useDispatch()
+    const carouselIndex = _useSelector(state => state.processCarouselIndex)
+    const addNewprocessMapper = _useSelector(state => state.addNewProcess)
 
     function handleAddStageStep() {
         if (carouselIndex < 3) {
-            setCarouselIndex(carouselIndex + 1)
+            dispatch({type: ADD_NEW_PROCESS_CAROUSEL_INDEX, payload: {processCarouselIndex: carouselIndex + 1 }})
         }
         return carouselIndex;
     }
 
     function handleProcessTitleChange(event) {
-        setProcessMapper({
-            ...processMapper,
-            title: event.target.value
-        })
+        dispatch(addNewProcessSetFields("title", event.target.value))
     }
 
     function handleSaveProcess() {
-        dispatch(saveNewProcess(processMapper))
+        if (addNewprocessMapper.id) {
+            dispatch(editProcess(addNewprocessMapper.id))
+        } else {
+            dispatch(saveNewProcess())
+        }
+    }
+
+    function handleCancelProcess() {
+        dispatch({type: ADD_NEW_PROCESS_CANCEL})
     }
 
     return (
@@ -58,16 +46,16 @@ export default function AddProcess({_useSelector = useSelector,
                         <Form.Group className="mb-3">
                             <Form.Label>Process Title</Form.Label>
                             <Form.Control type="text" placeholder="Enter process title"
-                                          value={processMapper.title}
+                                          value={addNewprocessMapper.title}
                                           onChange={event => handleProcessTitleChange(event)} />
                         </Form.Group>
                     </Form>
                 </div>
                 <Carousel.Caption>
-                    <Button variant="primary" type="button" onClick={handleAddStageStep} disabled={processMapper.title ? false : true}>
+                    <Button variant="primary" type="button" onClick={handleAddStageStep} disabled={addNewprocessMapper.title ? false : true}>
                         Add Stage 1
                     </Button>{' '}
-                    <Button variant="secondary" type="button">
+                    <Button variant="secondary" type="button" onClick={handleCancelProcess}>
                         Cancel
                     </Button>
                 </Carousel.Caption>
@@ -75,17 +63,17 @@ export default function AddProcess({_useSelector = useSelector,
             {[1,2,3].map((stageNumber, index) => (
                 <Carousel.Item key={stageNumber}>
                     <div className={"addProcessWizard"}>
-                        <AddStage stageNumber={stageNumber} stageMapper={processMapper.stages[index]} />
+                        <AddStageC stageNumber={stageNumber} />
                     </div>
                     <Carousel.Caption>
                         {stageNumber !== 3 ?
-                            <Button variant="primary" type="button" onClick={handleAddStageStep}>
+                            <Button variant="primary" type="button" onClick={handleAddStageStep} disabled={addNewprocessMapper.stages[stageNumber - 1].prompt ? false : true}>
                                 Add Stage {stageNumber + 1}
                             </Button> : null}{' '}
-                        <Button variant="primary" type="button" onClick={handleSaveProcess} disabled={!processMapper.title && !processMapper.stages[0].prompt}>
+                        <Button variant="primary" type="button" onClick={handleSaveProcess}>
                             Save
                         </Button>{' '}
-                        <Button variant="secondary" type="button">
+                        <Button variant="secondary" type="button" onClick={handleCancelProcess}>
                             Cancel
                         </Button>
                     </Carousel.Caption>

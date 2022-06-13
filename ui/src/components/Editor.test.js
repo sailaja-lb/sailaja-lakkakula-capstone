@@ -5,52 +5,114 @@ import userEvent from "@testing-library/user-event";
 import ProcessList from "./ProcessList";
 import AddProcess from "./AddProcess";
 
-it('should show processlist once loaded', () =>{
+it('should show processlist when loading is false', () =>{
     const dispatch = jest.fn();
-    const allProcess= {}
     const expectedList = 'This is expectedList'
     const expectedProcess = 'This is expectedProcess'
     const mockProcessList = () => <div>{expectedList}</div>
     const mockAddProcess = () => <div>{expectedProcess}</div>
+    const loadingText = 'expected loading text'
+    const mockLoadingText = () => <div>{loadingText}</div>
+    const state = {
+        loading: false
+    }
     render(<Editor _useDispatch={() => dispatch}
-                      _useSelector={fn => fn({allProcess})} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess}/>)
+                      _useSelector={fn => fn(state)} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess} SpinnerC ={mockLoadingText}/>)
+    expect(screen.getByText(expectedList)).toBeInTheDocument()
+
 })
-// to display create process button
-// it('should show create process button', () => {
-//     const expectedList = 'This is expectedList'
-//     const expectedProcess = 'This is expectedProcess'
-//     const mockProcessList = () => <div>{expectedList}</div>
-//     const mockAddProcess = () => <div>{expectedProcess}</div>
-//     render(<Editor _useDispatch={() => {}} _useSelector={() => {}} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess}/>);
-//     const createButton = screen.getByText(/Create Process/);
-//     expect(createButton).toBeInTheDocument();
-// });
+
+it('should show spinner component when loading is true', () =>{
+    const dispatch = jest.fn();
+    const expectedList = 'This is expectedList'
+    const expectedProcess = 'This is expectedProcess'
+    const loadingText = 'expected loading text'
+    const mockProcessList = () => <div>{expectedList}</div>
+    const mockAddProcess = () => <div>{expectedProcess}</div>
+    const mockLoadingText = () => <div>{loadingText}</div>
+    const state = {
+        loading: true
+    }
+    render(<Editor _useDispatch={() => dispatch}
+                   _useSelector={fn => fn(state)} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess} SpinnerC ={mockLoadingText}/>)
+    expect(screen.getByText(loadingText)).toBeInTheDocument()
+
+})
+
+it('should show AddProcess component when isAddProcess is true', () =>{
+    const dispatch = jest.fn();
+    const expectedList = 'This is expectedList'
+    const expectedProcess = 'This is expectedProcess'
+    const loadingText = 'expected loading text'
+    const mockProcessList = () => <div>{expectedList}</div>
+    const mockAddProcess = () => <div>{expectedProcess}</div>
+    const mockLoadingText = () => <div>{loadingText}</div>
+    const state = {
+       isAddProcess : true
+    }
+    render(<Editor _useDispatch={() => dispatch}
+                   _useSelector={fn => fn(state)} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess} SpinnerC ={mockLoadingText}/>)
+    expect(screen.getByText(expectedList)).toBeInTheDocument()
+
+})
+
+
+it('should show create process button when isAddProcess is false', () => {
+    const dispatch = jest.fn();
+    const expectedList = 'This is expectedList'
+    const expectedProcess = 'This is expectedProcess'
+    const loadingText = 'expected loading text'
+    const mockProcessList = () => <div>{expectedList}</div>
+    const mockAddProcess = () => <div>{expectedProcess}</div>
+    const mockLoadingText = () => <div>{loadingText}</div>
+    const state = {
+        isAddProcess : false
+    }
+    render(<Editor _useDispatch={() => dispatch}
+                   _useSelector={fn => fn(state)} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess} SpinnerC ={mockLoadingText}/>)
+    const createButton = screen.getByText(/Create Process/);
+    expect(createButton).toBeInTheDocument();
+});
 
 it('should dispatch ADD_NEW_PROCESS when create process button is clicked', () => {
     const dispatch = jest.fn()
-    let _addNewProcess
-    let addNewProcess;
     const expectedList = 'This is expectedList'
     const expectedProcess = 'This is expectedProcess'
     const mockProcessList = () => <div>{expectedList}</div>
     const mockAddProcess = () => <div>{expectedProcess}</div>
-    _addNewProcess = addNewProcess;
     render(<Editor _useDispatch={() => dispatch} _useSelector={() => {}} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess}/>);
     userEvent.click(screen.getByText('Create Process'))
     expect(dispatch).toHaveBeenLastCalledWith({type: ADD_NEW_PROCESS})
 });
+it('should show Process has been deleted successfully when deleteProcessMessageSuccessful is true', () => {
+    const dispatch = jest.fn();
+    const expectedList = 'This is expectedList'
+    const expectedProcess = 'This is expectedProcess'
+    const loadingText = 'expected loading text'
+    const mockProcessList = () => <div>{expectedList}</div>
+    const mockAddProcess = () => <div>{expectedProcess}</div>
+    const mockLoadingText = () => <div>{loadingText}</div>
+    const state = {
+        deleteProcessMessageSuccessful : true
+    }
+    render(<Editor _useDispatch={() => dispatch}
+                   _useSelector={fn => fn(state)} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess} SpinnerC ={mockLoadingText}/>)
+    expect(screen.getByText("Process has been deleted successfully")).toBeInTheDocument()
+});
 
-// it('should show AddProcess at the beginning when adding a Process', () => {
-//     const dispatch = jest.fn()
-//         const state = {
-//             allProcess: [
-//                 {title: 'thread1', stages:[]},
-//                 {title: 'thread2', stages: []}
-//             ],
-//             isAddProcess: {title: 'xyz',stages:[]}
-//         }
-//         const mockProcessList = ({process}) => <div>{process}</div>
-//         const mockAddProcess = () => <div>{'xyz'}</div>
-//         render(<Editor _useSelector={fn => fn(state)} _useDispatch={() => dispatch} AddProcessC ={mockAddProcess} ProcessListC={mockProcessList}/>)
-//         expect(screen.getByText(state.allProcess[1].title)).toBeInTheDocument()
-// })
+it('should show New Process has been added successfully when newProcessMessageSuccessful is true', () => {
+    const dispatch = jest.fn();
+    const expectedList = 'This is expectedList'
+    const expectedProcess = 'This is expectedProcess'
+    const loadingText = 'expected loading text'
+    const mockProcessList = () => <div>{expectedList}</div>
+    const mockAddProcess = () => <div>{expectedProcess}</div>
+    const mockLoadingText = () => <div>{loadingText}</div>
+    const state = {
+        newProcessMessageSuccessful : true
+    }
+    render(<Editor _useDispatch={() => dispatch}
+                   _useSelector={fn => fn(state)} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess} SpinnerC ={mockLoadingText}/>)
+    expect(screen.getByText("New Process has been added successfully")).toBeInTheDocument()
+});
+

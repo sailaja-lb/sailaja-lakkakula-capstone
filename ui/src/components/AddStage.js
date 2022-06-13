@@ -1,49 +1,33 @@
 import {useDispatch, useSelector} from "react-redux";
 import {Form} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {addNewProcessSetFields} from "../modules/appRedux";
 
 export default function AddStage({_useSelector = useSelector, _useDispatch = useDispatch,
-                                     stageNumber = 1, stageMapper = {}}) {
-    const [prompt, setPrompt] = useState("")
-    const [resType, setResType] = useState("")
-    const [order, setOrder] = useState(stageNumber)
-    const [choices, setChoices] = useState("")
+                                     stageNumber = 1}) {
 
-    useEffect(() => {
-        stageMapper.stage_order = order
-    }, [order])
+    const dispatch = _useDispatch()
+    const addNewProcess = _useSelector(state => state.addNewProcess)
+    const { prompt, resType="", order, choices } = addNewProcess.stages[stageNumber - 1]
 
     function onPromptChange(event) {
-        const prompt = event.target.value
-        setPrompt(prompt)
-        stageMapper.prompt = prompt
+        const promptVal = event.target.value
+        dispatch(addNewProcessSetFields("prompt", promptVal, stageNumber - 1))
     }
 
     function onResTypeChange(event) {
-        const resType = event.target.value
-        stageMapper.res_type = resType;
-        if (resType === "boolean") {
-            stageMapper.choices = "True|False"
-        } else if (resType === "multi") {
-            stageMapper.choices = "||"
-        } else {
-            stageMapper.choices = ""
-        }
-        setResType(resType)
-        setChoices(stageMapper.choices)
+        const resTypeVal = event.target.value
+        dispatch(addNewProcessSetFields("resType", resTypeVal, stageNumber - 1))
     }
 
     function onOrderChange(event) {
         const orderNum = event.target.value
-        setOrder(orderNum)
-        stageMapper.stage_order = orderNum
+        dispatch(addNewProcessSetFields("order", orderNum, stageNumber - 1))
     }
 
     function handleAddMultiFields(event, index) {
-        const booleanFields = choices.split("|");
-        booleanFields[index] = event.target.value;
-        stageMapper.choices = booleanFields.join("|")
-        setChoices(stageMapper.choices)
+        const multiFields = choices.split("|");
+        multiFields[index] = event.target.value;
+        dispatch(addNewProcessSetFields("choices", multiFields.join("|"), stageNumber - 1))
     }
 
     return (

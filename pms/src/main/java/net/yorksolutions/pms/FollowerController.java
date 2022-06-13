@@ -1,19 +1,20 @@
 package net.yorksolutions.pms;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/follower")
 public class FollowerController {
-    private final FollowerService service;
 
-    private final EditorService editorService;
+    private final PMSService editorService;
 
-    public FollowerController(@NonNull FollowerService service, EditorService editorService) {
-        this.service = service;
+    @Autowired
+    public FollowerController(@NonNull PMSService editorService) {
         this.editorService = editorService;
     }
 
@@ -23,17 +24,5 @@ public class FollowerController {
         return editorService.getAllProcess();
     }
 
-    @PutMapping("/startProcess/{id}")
-    @CrossOrigin
-    public void startProcess(@PathVariable(value = "id") Long processId, @RequestBody Process process) {
-        return editorService.updateProcessStatus(processId, );
-    }
-//    @PostMapping("/startProcess")
-//    @CrossOrigin
-//    public void startProcess() {}
-//
-//    @PostMapping("/startProcess")
-//    @CrossOrigin
-//    public void startProcess() {}
 
 }

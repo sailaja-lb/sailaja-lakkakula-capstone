@@ -25,6 +25,18 @@ public class Stage {
     @Column(name = "stage_order")
     private Integer order;
 
+    public Stage(){
+
+    }
+
+    public Stage(String prompt, String resType, String choices, String answer, Integer order) {
+        this.prompt = prompt;
+        this.resType = resType;
+        this.choices = choices;
+        this.answer = answer;
+        this.order = order;
+    }
+
     public Long getId() {
         return id;
     }

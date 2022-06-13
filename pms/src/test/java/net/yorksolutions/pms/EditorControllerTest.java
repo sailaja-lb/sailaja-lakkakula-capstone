@@ -2,7 +2,10 @@ package net.yorksolutions.pms;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -11,37 +14,47 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.UUID;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EditorControllerTest {
 
     @LocalServerPort
     int port;
 
-    @Autowired
+    @InjectMocks
     EditorController controller;
 
     @Mock
-    EditorService service;
+    PMSService service;
 
-    @BeforeEach
-    void setup() {
-        controller.setService(service);
-    }
-
-//    @Test
-//    void itShouldListAllProcessesWhenGetAllProcessIsCalled() {
-//        TestRestTemplate rest = new TestRestTemplate();
-//        String url = "http://localhost:" + port + "/allProcess";
-//        when(service.getAllProcess()).thenReturn(token);
-//        final ResponseEntity<Void> response = rest.getForEntity(url, Void.class);
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//    @BeforeEach
+//    void setup() {
+//        controller.setService(service);
 //    }
+
+    @Test
+    void itShouldListAllProcessesWhenGetAllProcessIsCalled() {
+        List<Process> processList = new ArrayList<>();
+        List<Stage> stages = new ArrayList<>();
+        Process p1 = new Process("title1", "", stages);
+        processList.add(p1);
+        when(service.getAllProcess()).thenReturn(processList);
+        TestRestTemplate rest = new TestRestTemplate();
+        String url = "http://localhost:" + port + "/editor/allProcess";
+        final ResponseEntity<Process[]> response = rest.getForEntity(url, Process[].class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(processList, Arrays.asList(response.getBody()));
+    }
 
 //    @Test
 //    void itShouldDeleteAProcessWithGivenIdWhenCalled() {
@@ -49,8 +62,21 @@ public class EditorControllerTest {
 //        final Long id = 1L;
 //        String url = "http://localhost:" + port + "/deleteProcess/{id}";
 //        doThrow(new ResponseStatusException(HttpStatus.ACCEPTED)).when(service).deleteProcess(id);
-//        final ResponseEntity<Void> response = rest.getForEntity(url, Void.class);
+//        final ResponseEntity<Void> response = rest.delete(url);
 //        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 //    }
+    @Test
+    void itShouldCreateAProcessWhenCalled() {
+        TestRestTemplate rest = new TestRestTemplate();
+        String url = "http://localhost:" + port + "/editor/createProcess";
+//        List<Process> processList = new ArrayList<>();
+        List<Stage> stages = new ArrayList<>();
+        Process p1 = new Process("title1", "started", stages);
+//        processList.add(p1);
+        when(service.addProcess(p1)).thenReturn(p1);
+        final ResponseEntity<Process> response = rest.postForEntity(url, p1, Process.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(p1, response.getBody());
+    }
 
 }

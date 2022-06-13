@@ -6,15 +6,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/editor")
 public class EditorController {
-    private final EditorService service;
+    private final PMSService service;
 
     @Autowired
-    public EditorController(@NonNull EditorService service) {
+    public EditorController(@NonNull PMSService service) {
         this.service = service;
     }
 
@@ -26,8 +25,8 @@ public class EditorController {
 
     @PostMapping("/createProcess")
     @CrossOrigin
-    public void createProcess(@RequestBody Process process) {
-        service.addProcess(process);
+    public Process createProcess(@RequestBody Process process) {
+        return service.addProcess(process);
     }
 
     @PutMapping("/updateProcess/{id}")
@@ -42,6 +41,6 @@ public class EditorController {
         service.deleteProcess(processId);
     }
 
-    public void setService(EditorService service) {
+    public void setService(PMSService service) {
     }
 }
