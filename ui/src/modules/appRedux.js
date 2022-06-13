@@ -111,7 +111,6 @@ export default function reducer(state = initialState, action) {
                 isAddNewProcess: false,
                 allProcess: action.payload.allProcess
             }
-            //both same why?
         case EDIT_PROCESS_DONE:
             return {
                 ...state,
@@ -291,7 +290,6 @@ export function deleteProcess(processId, _fetch=fetch) {
 
 export function updateProcess(processId, status={}, _fetch=fetch) {
     return async function updateProcess(dispatch, getState) {
-        // dispatch({type: UPDATE_PROCESS_START})
         const state = getState()
         const url = `http://localhost:8080/editor/updateProcess/${processId}`
         const process = state.allProcess.find(each => each.id === processId)

@@ -248,32 +248,6 @@ it('should dispatch SAVE_NEW_PROCESS w/ new process ', async () => {
 
 })
 
-//editProcess
-it('should dispatch EDIT_PROCESS_DONE w/ token and process ', async () => {
-    const dispatch = jest.fn()
-    const token = 'some token'
-    const process = "some process"
-    const url = `http://localhost:8080/editor/updateProcess/{token}`
-    let _url2
-
-    const mockFetch = (url) => {
-        _url2 = url
-        return new Promise(resolve => resolve({
-            ok: true,
-            method: 'PUT',
-            body: JSON.stringify(process),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }))
-    }
-    const sideEffect = editProcess(token, process, mockFetch)
-    await sideEffect(dispatch)
-    expect(_url2).toBe(url)
-    expect(dispatch).toHaveBeenCalledWith({type: EDIT_PROCESS_DONE})
-
-})
-
 //deleteProcess
 it('should dispatch DELETE_PROCESS_DONE w/ token when start process for editor', async () => {
     const dispatch = jest.fn()
@@ -297,8 +271,63 @@ it('should dispatch DELETE_PROCESS_DONE w/ token when start process for editor',
     expect(dispatch).toHaveBeenCalledWith({type: DELETE_PROCESS_DONE, payload:{allProcess: expected.allProcess}})
 
 })
+//update process status
+it('should dispatch UPDATE_PROCESS_DONE with all processes', async () => {
+    const dispatch = jest.fn()
+    const processId = 1
+    const url = `http://localhost:8080/editor/updateProcess/${processId}`
+    let _url2
 
-//updateProcess
-// it('should dispatch DELETE_PROCESS_DONE w/ token when start process for editor', async () => {
-//
-// })
+    const mockFetch = (url) => {
+        _url2 = url
+        return new Promise(resolve => resolve({
+            ok: true,
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            json: () => new Promise(res => res({id: 1, title: 'process1', status:"started", stages: []}))
+        }))
+    }
+    const state = { allProcess: [{id: 1, title: 'process1', status:"", stages: []}, {id: 2, title: 'process2', status:"started", stages: []}] }
+    const getState = () => state
+    const sideEffect = updateProcess(processId, {status: "started"}, mockFetch)
+    await sideEffect(dispatch, getState)
+    const expected = { allProcess: [{id: 1, title: 'process1', status:"started", stages: []}, {id: 2, title: 'process2', status:"started", stages: []}] }
+    expect(_url2).toBe(url)
+    expect(dispatch).toHaveBeenCalledWith({type: UPDATE_PROCESS_DONE, payload:{allProcess: expected.allProcess}})
+
+})
+//editProcess
+it('should dispatch EDIT_PROCESS_DONE w/ pId ', async () => {
+    const dispatch = jest.fn()
+    const pId = 1
+    const process = {id: 1, title: 'process1', status:"", stages: []}
+    const url = `http://localhost:8080/editor/updateProcess/${pId}`
+    let _url2
+
+    const mockFetch = (url) => {
+        _url2 = url
+        return new Promise(resolve => resolve({
+            ok: true,
+            method: 'PUT',
+            body: JSON.stringify(process),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            json: () => new Promise(res => res({id: 1, title: 'process1', status:"", stages: [{prompt: "stage1", order: 1, resType: "text"}]}))
+        }))
+    }
+    const state = {
+        allProcess: [{id: 1, title: 'process1', status:"", stages: []}, {id: 2, title: 'process2', status:"started", stages: []}],
+        addNewProcess: {id: 1, title: 'process1', status:"", stages: [{prompt: "stage1", order: 1, resType: "text"}]}
+    }
+
+    const sideEffect = editProcess(pId, mockFetch)
+    const getState = () => state
+    await sideEffect(dispatch, getState)
+    const expected = { allProcess: [{id: 1, title: 'process1', status:"", stages: [{prompt: "stage1", order: 1, resType: "text"}]}, {id: 2, title: 'process2', status:"started", stages: []}] }
+    expect(_url2).toBe(url)
+    expect(dispatch).toHaveBeenCalledWith({type: EDIT_PROCESS_DONE,payload:{allProcess: expected.allProcess} })
+
+})
