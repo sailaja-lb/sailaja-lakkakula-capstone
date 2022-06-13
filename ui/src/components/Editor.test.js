@@ -2,10 +2,8 @@ import Editor from "./Editor";
 import {render, screen} from "@testing-library/react";
 import {ADD_NEW_PROCESS} from "../modules/appRedux";
 import userEvent from "@testing-library/user-event";
-import ProcessList from "./ProcessList";
-import AddProcess from "./AddProcess";
 
-it('should show processlist when loading is false', () =>{
+it('should show ProcessList when loading is false', () =>{
     const dispatch = jest.fn();
     const expectedList = 'This is expectedList'
     const expectedProcess = 'This is expectedProcess'

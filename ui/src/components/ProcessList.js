@@ -3,10 +3,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {deleteProcess, EDIT_PROCESS_START, updateProcess} from "../modules/appRedux";
 import StagesList from "./StagesList";
 
-export default function ProcessList({allProcess= [], _useDispatch = useDispatch, _useSelector = useSelector}) {
+export default function ProcessList({_useDispatch = useDispatch, _useSelector = useSelector, StagesListC = StagesList}) {
 
     const dispatch = useDispatch()
     const role = _useSelector(state => state.pmsRole)
+    const allProcess = _useSelector(state => state.allProcess)
 
     function handleDeleteProcess(pId) {
         dispatch(deleteProcess(pId))
@@ -54,7 +55,7 @@ export default function ProcessList({allProcess= [], _useDispatch = useDispatch,
                 </Card.Header>
                 {process.status === "started" ?
                     <Card.Body>
-                        <StagesList processStages={process.stages} processId={process.id} handleProcessDone={handleProcessDone} />
+                        <StagesListC processStages={process.stages} processId={process.id} handleProcessDone={handleProcessDone} />
                     </Card.Body> : null}
             </Card>)}
         </>

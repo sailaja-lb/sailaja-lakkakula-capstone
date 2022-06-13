@@ -41,6 +41,6 @@ public class EditorController {
         service.deleteProcess(processId);
     }
 
-    public void setService(PMSService service) {
-    }
+//    public void setService(PMSService service) {
+//    }
 }
