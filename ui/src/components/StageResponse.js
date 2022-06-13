@@ -38,8 +38,10 @@ export default function StageResponse({_useDispatch = useDispatch, _useSelector 
         <Form>
             <Form.Group className="mb-3">
                 {resType === "text" ? <Form.Control type="text" value={(answer===null) ? "" : answer} onChange={e => handleTextFieldChange(e)} /> : null}
-                {resType === "boolean" ? choices.split("|").map((each, index) => <Form.Check key={index} type={"radio"} value={each} label={each} checked={(each === answer) ? true : false} onChange={e => handleBooleanFieldChange(e)} name={`res_radio_${processId}`} />) : null}
-                {resType === "multi" ? choices.split("|").map((each, index) => <Form.Check key={index} type={"checkbox"} value={each} label={each} checked={isMultiChecked(each, answer)} onChange={e => handleMultiFieldChange(e)} />) : null}
+                {resType === "boolean" ? choices.split("|").map((each, index) =>
+                    <Form.Check key={index} type={"radio"} value={each} label={each} checked={(each === answer) ? true : false} onChange={e => handleBooleanFieldChange(e)} name={`res_radio_${processId}`} />) : null}
+                {resType === "multi" ? choices.split("|").map((each, index) =>
+                    <Form.Check key={index} type={"checkbox"} value={each} label={each} checked={isMultiChecked(each, answer)} onChange={e => handleMultiFieldChange(e)} />) : null}
             </Form.Group>
         </Form>
     </>

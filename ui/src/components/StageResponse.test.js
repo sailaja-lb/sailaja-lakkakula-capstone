@@ -2,7 +2,7 @@ import {render, screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import StageResponse from "./StageResponse";
 
-it('should call handleStartProcess function and dispatch updateProcess when start is clicked', () =>{
+it('should call handleTextFieldChange function and dispatch updateProcessSetFields when start is clicked', () =>{
     const dispatch = jest.fn()
     const stageRes = {
         resType: "text",
@@ -14,7 +14,7 @@ it('should call handleStartProcess function and dispatch updateProcess when star
                         _useSelector={fn => fn()} processId={1}
                           processStage={stageRes} />)
     const textField = screen.getByDisplayValue(stageRes.answer)
-    userEvent.type(textField, "test")
+    userEvent.type(textField, "text")
     expect(typeof dispatch.mock.calls[0][0]).toBe("function")
 
 })
