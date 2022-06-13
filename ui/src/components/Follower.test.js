@@ -5,10 +5,8 @@ import Follower from "./Follower";
 it('should show spinner component when loading is true', () =>{
     const dispatch = jest.fn();
     const expectedList = 'This is expectedList'
-    const expectedProcess = 'This is expectedProcess'
     const loadingText = 'expected loading text'
     const mockProcessList = () => <div>{expectedList}</div>
-    const mockAddProcess = () => <div>{expectedProcess}</div>
     const mockLoadingText = () => <div>{loadingText}</div>
     const state = {
         loading: true
@@ -22,16 +20,14 @@ it('should show spinner component when loading is true', () =>{
 it('should show processlist when loading is false', () =>{
     const dispatch = jest.fn();
     const expectedList = 'This is expectedList'
-    const expectedProcess = 'This is expectedProcess'
     const mockProcessList = () => <div>{expectedList}</div>
-    const mockAddProcess = () => <div>{expectedProcess}</div>
     const loadingText = 'expected loading text'
     const mockLoadingText = () => <div>{loadingText}</div>
     const state = {
         loading: false
     }
     render(<Editor _useDispatch={() => dispatch}
-                   _useSelector={fn => fn(state)} ProcessListC = {mockProcessList} AddProcessC ={mockAddProcess} SpinnerC ={mockLoadingText}/>)
+                   _useSelector={fn => fn(state)} ProcessListC = {mockProcessList} SpinnerC ={mockLoadingText}/>)
     expect(screen.getByText(expectedList)).toBeInTheDocument()
 
 })
