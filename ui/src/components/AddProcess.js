@@ -4,7 +4,6 @@ import AddStage from "./AddStage";
 import {
     ADD_NEW_PROCESS_CANCEL,
     ADD_NEW_PROCESS_CAROUSEL_INDEX,
-    ADD_NEW_PROCESS_SET_FIELDS,
     addNewProcessSetFields, editProcess,
     saveNewProcess
 } from "../modules/appRedux";

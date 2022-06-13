@@ -12,7 +12,7 @@ export default function StagesList({_useDispatch = useDispatch, _useSelector = u
             {processStages.map((stage, index) => <Accordion.Item eventKey={index} key={index}>
                 <Accordion.Header>{stage.prompt}</Accordion.Header>
                 <Accordion.Body>
-                    <StageResponse processStage={stage} processId={processId} />
+                    <StageResponse _useDispatch={_useDispatch} processStage={stage} processId={processId} />
                 </Accordion.Body>
             </Accordion.Item>)}
             <Button type={"button"} onClick={clickProcessDone}>Done</Button>

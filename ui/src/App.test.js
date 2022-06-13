@@ -1,7 +1,5 @@
 import {render, screen} from '@testing-library/react';
 import App from './App';
-import {SET_ROLE_CONTEXT} from "./modules/appRedux";
-import Editor from "./components/Editor";
 
 it('should display Editor when pmsRole equals editor', () => {
     const dispatch = jest.fn()
@@ -46,9 +44,6 @@ it('should display Which role are you?', () => {
     const mockEditor = () => <div>{editor}</div>
     const mockFollower = () => <div>{follower}</div>
     const pmsRole = ''
-    // const state = {
-    //     pmsRole: ''
-    // }
     render(<App _useDispatch={() => dispatch} _useSelector={fn => fn({pmsRole})} EditorC={mockEditor} FollowerC = {mockFollower} />)
     expect(screen.getByText(expectedText)).toBeInTheDocument()
 });

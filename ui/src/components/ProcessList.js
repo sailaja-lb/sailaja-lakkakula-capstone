@@ -5,7 +5,7 @@ import StagesList from "./StagesList";
 
 export default function ProcessList({_useDispatch = useDispatch, _useSelector = useSelector, StagesListC = StagesList}) {
 
-    const dispatch = useDispatch()
+    const dispatch = _useDispatch()
     const role = _useSelector(state => state.pmsRole)
     const allProcess = _useSelector(state => state.allProcess)
 
